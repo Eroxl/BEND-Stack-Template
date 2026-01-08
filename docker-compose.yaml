@@ -20,6 +20,7 @@ services:
     restart: always
     environment:
       PORT: ${BACKEND_PORT}
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:

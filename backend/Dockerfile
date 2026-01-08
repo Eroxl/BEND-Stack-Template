@@ -12,6 +12,7 @@ RUN bun install
 
 COPY backend/src backend/src
 COPY backend/tsconfig.json backend/tsconfig.json
+COPY backend/drizzle backend/drizzle
 
 WORKDIR /app/backend
 
@@ -29,6 +30,7 @@ FROM gcr.io/distroless/base
 WORKDIR /backend
 
 COPY --from=build /app/backend/server server
+COPY --from=build /app/backend/drizzle drizzle
 
 ENV NODE_ENV=production
 
