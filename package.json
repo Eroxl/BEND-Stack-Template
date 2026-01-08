@@ -1,0 +1,17 @@
+{
+  "name": "bend-stack-template",
+  "private": true,
+  "workspaces": [
+    "app",
+    "backend"
+  ],
+  "scripts": {
+    "build": "podman compose --env-file .env build",
+    "start": "podman compose --env-file .env up",
+    "dev:build": "podman compose --env-file .env -f docker-compose.dev.yaml build",
+    "dev": "podman compose --env-file .env -f docker-compose.dev.yaml up"
+  },
+  "devDependencies": {
+    "elysia": "1.4.21"
+  }
+}
