@@ -1,0 +1,18 @@
+FROM oven/bun
+
+WORKDIR /app
+
+COPY package.json bun.lock ./
+COPY backend/package.json backend/bun.lock backend/
+COPY app/package.json app/bun.lock app/
+
+RUN bun install
+
+COPY backend backend/
+COPY app/ app/
+
+EXPOSE 3000
+
+WORKDIR /app/backend/
+
+CMD ["bun", "run", "dev"]
