@@ -20,12 +20,48 @@ services:
     restart: always
     environment:
       PORT: ${BACKEND_PORT}
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend/src:/app/backend/src
+      - ./backend/drizzle:/app/backend/drizzle
     networks:
       - db-net
     depends_on:
       - db
+
+  db-watcher:
+    build:
+      context: ./
+      dockerfile: backend/Dockerfile.dev
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
+    volumes:
+      - ./backend/src:/app/backend/src
+      - ./backend/drizzle:/app/backend/drizzle
+    networks:
+      - db-net
+    depends_on:
+      - db
+    command: ["bun", "run", "db:watch"]
+
+  db-studio:
+    build:
+      context: ./
+      dockerfile: backend/Dockerfile.dev
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/mydatabase
+    volumes:
+      - ./backend/src:/app/backend/src
+      - ./backend/drizzle:/app/backend/drizzle
+    ports:
+      - "4983:4983"
+    networks:
+      - db-net
+    depends_on:
+      - db
+    command: ["bun", "run", "db:studio"]
 
   db:
     image: postgres:16
